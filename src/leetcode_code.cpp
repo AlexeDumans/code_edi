@@ -20,22 +20,24 @@ using namespace std;
 const int Mod = 1e9 + 7;
 
 int countWays(vector<vector<int>>& ranges) {
-    long long sum;
-    sort(ranges.begin(), ranges.end());
+        long long sum = 1;
+        sort(ranges.begin(), ranges.end());
 
-    for (int i = 0; i < ranges.size(); ++i) {
-        int j = i + 1;
-        cout << ranges[i][0] << " " << ranges[i][1] << endl;
-        while(){
+        for (int i = 0; i < ranges.size();) {
+            int j = i + 1;
 
+            int r_max = ranges[i][1];
+            cout << ranges[i][0] << " " << ranges[i][1] << endl;
+            while (j < ranges.size() && ranges[j][0] <= r_max) {
+                r_max = max(r_max, ranges[j][1]);
+                j++;
+            }
+            sum = sum * 2 % Mod;
+            i = j;
         }
-        sum = sum * 2 %  Mod;
-        i = j;
 
+        return sum;
     }
-
-    return sum % Mod;
-}
 
 int main() {
     // 快速 OI
@@ -65,8 +67,11 @@ int main() {
     // 3. string
     // string a = "";
 
+
+
     // ------------引用 leetcode 函数------------
-    cout << countWays(a);
+    countWays(a);
 
     return 0;
+
 }
