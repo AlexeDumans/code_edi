@@ -15,29 +15,30 @@
 
 using namespace std;
 
-#define N 2
+#define N 4
 #define M 2
 const int Mod = 1e9 + 7;
 
 int countWays(vector<vector<int>>& ranges) {
-        long long sum = 1;
-        sort(ranges.begin(), ranges.end());
+    long long sum = 1;
+    sort(ranges.begin(), ranges.end());
 
-        for (int i = 0; i < ranges.size();) {
-            int j = i + 1;
+    for (int i = 0; i < ranges.size();) {
+        int j = i + 1;
 
-            int r_max = ranges[i][1];
-            cout << ranges[i][0] << " " << ranges[i][1] << endl;
-            while (j < ranges.size() && ranges[j][0] <= r_max) {
-                r_max = max(r_max, ranges[j][1]);
-                j++;
-            }
-            sum = sum * 2 % Mod;
-            i = j;
+        int r_max = ranges[i][1];
+        cout << ranges[i][0] << " " << ranges[i][1] << endl;
+        while (j < ranges.size() && ranges[j][0] <= r_max) {
+            r_max = max(r_max, ranges[j][1]);
+            j++;
         }
-
-        return sum;
+        sum = sum * 2 % Mod;
+        i = j;
     }
+
+    return sum;
+}
+
 
 int main() {
     // 快速 OI
@@ -56,22 +57,7 @@ int main() {
         }
     }
 
-    // 2. vector<int>
-    // vector<int> a(N);
-    // for (int j = 0; j < N; ++j) {
-    //     int num;
-    //     cin >> num;
-    //     a[j] = num;
-    // }
-
-    // 3. string
-    // string a = "";
-
-
-
     // ------------引用 leetcode 函数------------
     countWays(a);
-
     return 0;
-
 }
