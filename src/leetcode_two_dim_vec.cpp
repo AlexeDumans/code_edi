@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <queue>
+#include <set>
 #include <stack>
 #include <unordered_set>
 #include <unordered_map>
@@ -15,49 +16,73 @@
 
 using namespace std;
 
-#define N 4
 #define M 2
 const int Mod = 1e9 + 7;
 
-int countWays(vector<vector<int>>& ranges) {
-    long long sum = 1;
-    sort(ranges.begin(), ranges.end());
+#define fu(i, l, u) for (int i = l; i < u; ++i)
+#define fd(i, u, l) for (int i = u; i > l; --i)
+const int N = 20000;
 
-    for (int i = 0; i < ranges.size();) {
-        int j = i + 1;
+vector<int> father(N);
 
-        int r_max = ranges[i][1];
-        cout << ranges[i][0] << " " << ranges[i][1] << endl;
-        while (j < ranges.size() && ranges[j][0] <= r_max) {
-            r_max = max(r_max, ranges[j][1]);
-            j++;
-        }
-        sum = sum * 2 % Mod;
-        i = j;
+void init() {
+    fu(i, 0, N) {
+        father[i] = i;
     }
-
-    return sum;
 }
 
+int find(int i) {
+    return father[i] == i ? i : father[i] = find(father[i]);
+}
 
+bool isSame(int i, int j) {
+    i =find(i);
+    j = find(j);
+    return i == j;
+}
+
+void join(int i, int j) {
+    i = find(i);
+    j = find(j);
+    if (i == j)
+        return;
+    father[j] = i;
+}
+
+vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+    init();
+
+    fu(i, 0, edges.size()) {
+        int u = edges[i][0];
+        int v = edges[i][1];
+        if (isSame(u, v)) {
+            return edges[i];
+        }
+        join(u, v);
+    }
+    return vector<int>{};
+}
 int main() {
     // 快速 OI
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-
     // ------输入-------
-    // 1. vector<vertor<int>>
+    // 1. vector<vector<int>>
     vector<vector<int>> a(N, vector<int>(M));
-    for (int i = 0; i < N; ++i) {
-        for (int j = 0; j < M; ++j) {
-            int num;
-            cin >> num;
-            a[i][j] = num;
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 2; ++j) {
+            cin >> a[i][j];
         }
     }
 
+    // 一个简单的遍历二维数组的
+    // for (int i = 0; i < array_.size(); ++i) {
+    //     for (int j = 0; j < array_[0].size(); ++j) {
+    //     }
+    // }
+
     // ------------引用 leetcode 函数------------
-    countWays(a);
+    cout << findRedundantConnection(a)[0] << " " << findRedundantConnection(a)[1] << endl;
     return 0;
 }

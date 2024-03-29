@@ -12,32 +12,32 @@
 #include <unordered_map>
 #include <math.h>
 #include <algorithm>
+#include <climits>
 
 using namespace std;
 
-#define N 4
-#define M 2
+#define N 5
 
 const int Mod = 1e9 + 7;
-int firstDayBeenInAllRooms(vector<int>& nextVisit) {
-    unordered_map<int, int> count_visit;
-    int n = nextVisit.size();
-    count_visit[0] = 1;
-    int next_room = nextVisit[0];
-    long long day_ = 0;
-    // 暴力
-    while (count_visit.size() != n) {
-        count_visit[next_room]++;
-        if (count_visit[next_room] % 2 == 1) {
-            next_room = nextVisit[next_room];
-        } else {
-            next_room = (next_room + 1) % n;
-        }
-        day_++;
-    }
-    return day_ % Mod;
-}
 
+void dfs(vector<vector<int>>& rooms, int i, vector<bool>& visited) {
+    if (visited[i])
+        return;
+    visited[i] = true;
+    for (auto k : rooms[i]) {
+        dfs(rooms, k, visited);
+    }
+}
+bool canVisitAllRooms(vector<vector<int>>& rooms) {
+    vector<bool> visited(rooms.size(), false);
+    dfs(rooms, 0, visited);
+    // 检查是否都访问到了
+    for (int i : visited) {
+        if (i == false)
+            return false;
+    }
+    return true;
+}
 int main() {
     // 快速 OI
     ios::sync_with_stdio(false);
@@ -53,6 +53,6 @@ int main() {
         a[j] = num;
     }
 
-    cout << firstDayBeenInAllRooms(a);
+    cout << minimumSum(a);
     return 0;
 }
