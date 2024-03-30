@@ -25,9 +25,12 @@ int countWays(vector<vector<int>>& ranges) {
 
     for (int i = 0; i < ranges.size(); ++i) {
         int j = i + 1;
-        cout << ranges[i][0] << " " << ranges[i][1] << endl;
-        while(){
 
+        int r_max = ranges[i][1];
+        cout << ranges[i][0] << " " << ranges[i][1] << endl;
+        while(j < ranges.size() && ranges[j][0] <= r_max ){
+            r_max = max(r_max,ranges[j][1]);
+            j++;
         }
         sum = sum * 2 %  Mod;
         i = j;
